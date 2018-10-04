@@ -1017,6 +1017,20 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                 }
                             }
                             GitHubTagSCMHead head = new GitHubTagSCMHead(tagName, tagDate);
+
+                            if(tagDate > 0L ){
+                                listener.getLogger().println("   Applying custom workaround to not scan old tags...");
+                                long atMostMillis = 9 * (60 * 60 * 24 * 1000)
+                                long tagAge = System.currentTimeMillis() - tagDate;
+                                if (tagAge > atMostMillis) {
+                                    listener.getLogger().println("   This tag is over 9 days old and won't be scanned.");
+                                    continue;
+                                }
+                            } else {
+                                listener.getLogger().println("   Unable to pre-filter this tag by date.");
+                            }
+
+
                             if (request.process(head, new GitTagSCMRevision(head, sha),
                                     new SCMSourceRequest.ProbeLambda<GitHubTagSCMHead, GitTagSCMRevision>() {
                                         @NonNull
