@@ -1020,7 +1020,7 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
 
                             if(tagDate > 0L ){
                                 listener.getLogger().println("   Applying custom workaround to not scan old tags...");
-                                long atMostMillis = 9 * (60 * 60 * 24 * 1000)
+                                long atMostMillis = 9 * (60 * 60 * 24 * 1000);
                                 long tagAge = System.currentTimeMillis() - tagDate;
                                 if (tagAge > atMostMillis) {
                                     listener.getLogger().println("   This tag is over 9 days old and won't be scanned.");
